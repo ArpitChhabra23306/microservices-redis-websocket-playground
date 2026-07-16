@@ -8,15 +8,14 @@ const server = http.createServer(function (req:any, res:any) {
 
 const wss = new WebSocketServer({ server });
 
-
 let userCnt = 0;
 wss.on('connection', function connection(socket){
     socket.on('error', console.error);
 
-    socket.on('message', function messsage(data){
+    socket.on('message', function messsage(data, isBinary){
         wss.clients.forEach(function each(client){
             if(client.readyState === WebSocket.OPEN){
-                client.send(data);
+                client.send(data, { binary: isBinary });
             }
         });
     });
